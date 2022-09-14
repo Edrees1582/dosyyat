@@ -1,0 +1,11 @@
+<%- layout('layouts/boilerplate') %>
+<form action="/subjects/<%=subject.id%>/notebooks" method="POST">
+  <label for="name">Name: </label>
+  <input type="text" name="notebook[name]" id="name" required />
+  <br /><br />
+  <label for="link">Link: </label>
+  <input type="text" name="notebook[link]" id="link" required />
+  <br /><br />
+  <button>Add</button>
+</form>
+<a href="/subjects/<%=subject.id%>">back</a>

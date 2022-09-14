@@ -1,0 +1,30 @@
+<%- layout('layouts/boilerplate') %>
+
+<% if (currentUser) { %>
+<h1>Username: <%=currentUser.username%></h1>
+<form action="/signout" method="POST">
+  <button>Sign out</button>
+</form>
+<br /><br />
+<% } %>
+
+<form action="/subjects" method="GET">
+  <input type="text" name="search" placeholder="Search" />
+  <button>Search</button>
+</form>
+<br />
+
+<% if (subjects.length) { %>
+<% for (const subject of subjects) { %>
+<a href="/subjects/<%=subject.id%>"><%=subject.title%></a><br />
+<% } %>
+<% } else { %>
+  <h2>No subjects found.</h2>
+<% } %>
+<br /><br />
+
+<% if (currentUser) { %>
+<a href="/subjects/new">Add new subject</a><br />
+<% } else { %>
+<a href="/signin" method="GET">Sign in</a>
+<% } %>

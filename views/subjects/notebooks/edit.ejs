@@ -1,0 +1,26 @@
+<%- layout('layouts/boilerplate') %>
+<form
+  action="/subjects/<%=subject.id%>/notebooks/<%=notebook._id%>/?_method=PUT"
+  method="POST"
+>
+  <label for="name">Name: </label>
+  <input
+    type="text"
+    name="notebook[name]"
+    id="name"
+    value="<%=notebook.name%>"
+    required
+  />
+  <br /><br />
+  <label for="link">Link: </label>
+  <input
+    type="text"
+    name="notebook[link]"
+    id="link"
+    value="<%=notebook.link%>"
+    required
+  />
+  <br /><br />
+  <button>Edit</button>
+</form>
+<a href="/subjects/<%=subject.id%>">back</a>
