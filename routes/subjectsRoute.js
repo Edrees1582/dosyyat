@@ -67,7 +67,7 @@ router
 router.route('/:id').get(show).delete(isSignedIn, isAuthorized, deleteSub);
 
 router
-  .route('/edit/:id')
+  .route('/:id/edit')
   .get(isSignedIn, isAuthorized, editForm)
   .put(isSignedIn, isAuthorized, edit);
 

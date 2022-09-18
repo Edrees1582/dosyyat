@@ -1,16 +1,12 @@
 const Subject = require('./models/subjectModel');
 
 module.exports.isSignedIn = (req, res, next) => {
-  if (!req.isAuthenticated()) return res.redirect('/signin');
-
+  if (!req.isAuthenticated()) return res.redirect('/subjects');
   next();
 };
 
 module.exports.isSignedOut = (req, res, next) => {
-  if (req.isAuthenticated()) {
-    req.session.returnTo = req.originalUrl;
-    return res.redirect('/subjects');
-  }
+  if (req.isAuthenticated()) return res.redirect('/subjects');
   next();
 };
 

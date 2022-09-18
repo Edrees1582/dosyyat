@@ -59,7 +59,7 @@ app.use((req, res, next) => {
 });
 
 app.use('/subjects', subjectsRoutes);
-app.use('/', usersRoutes);
+app.use('/secretSignInPath/6565', usersRoutes);
 
 app.get('/', (req, res) => {
   res.send(

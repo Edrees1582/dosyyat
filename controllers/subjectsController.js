@@ -3,11 +3,11 @@ const Subject = require('../models/subjectModel');
 
 module.exports.index = async (req, res) => {
   try {
-    let subjects = await Subject.find({});
+    let subjects = await Subject.find({}).sort({ title: 'asc' });
     if (req.query.search)
       subjects = await Subject.find({
         title: { $regex: req.query.search, $options: 'i' }
-      });
+      }).sort({ title: 'asc' });
 
     res.render('subjects/index', { subjects, info: { title: 'Dosyyat' } });
   } catch (error) {
@@ -52,14 +52,8 @@ module.exports.editForm = async (req, res) => {
   try {
     const subject = await Subject.findOne({ id: req.params.id });
     if (subject) {
-      const notebooksStr = subject.notebooks.join('::');
-      const videosStr = subject.videos.join('::');
-      const testBanksStr = subject.testBanks.join('::');
       res.render('subjects/edit', {
         subject,
-        notebooksStr,
-        videosStr,
-        testBanksStr,
         info: { title: `Dosyyat - ${subject.title} - Edit` }
       });
     }
@@ -69,21 +63,9 @@ module.exports.editForm = async (req, res) => {
 };
 
 module.exports.edit = async (req, res) => {
-  const editedSubject = req.body.subject;
-
-  if (editedSubject.notebooks)
-    editedSubject.notebooks = editedSubject.notebooks.split('::');
-  if (editedSubject.videos)
-    editedSubject.videos = editedSubject.videos.split('::');
-  if (editedSubject.testbanks)
-    editedSubject.testbanks = editedSubject.testbanks.split('::');
-
   try {
-    const subject = await Subject.findOneAndUpdate(
-      { id: req.params.id },
-      editedSubject
-    );
-    res.redirect(`/subjects/${subject.id}`);
+    await Subject.findOneAndUpdate({ id: req.params.id }, req.body.subject);
+    res.redirect(`/subjects/${req.body.subject.id}`);
   } catch (error) {
     res.send(error);
   }

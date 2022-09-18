@@ -2,7 +2,7 @@
 
 <% if (currentUser) { %>
 <h1>Username: <%=currentUser.username%></h1>
-<form action="/signout" method="POST">
+<form action="/secretSignInPath/6565/signout" method="POST">
   <button>Sign out</button>
 </form>
 <br /><br />
@@ -25,6 +25,4 @@
 
 <% if (currentUser) { %>
 <a href="/subjects/new">Add new subject</a><br />
-<% } else { %>
-<a href="/signin" method="GET">Sign in</a>
 <% } %>

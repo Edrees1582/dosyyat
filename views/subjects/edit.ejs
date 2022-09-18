@@ -1,5 +1,5 @@
 <%- layout('layouts/boilerplate') %>
-<form action="/subjects/edit/<%=subject.id%>?_method=PUT" method="POST">
+<form action="/subjects/<%=subject.id%>/edit?_method=PUT" method="POST">
   <label for="title">Title: </label>
   <input type="text" name="subject[title]" id="title" value="<%=subject.title%>" required />
   <br /><br />
