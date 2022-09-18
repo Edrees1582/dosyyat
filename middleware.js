@@ -1,7 +1,7 @@
 const Subject = require('./models/subjectModel');
 
 module.exports.isSignedIn = (req, res, next) => {
-  if (!req.isAuthenticated()) return res.redirect('/signin');
+  if (!req.isAuthenticated()) return res.redirect('/');
   next();
 };
 
