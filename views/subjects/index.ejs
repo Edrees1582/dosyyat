@@ -1,28 +1,38 @@
 <%- layout('layouts/boilerplate') %>
 
 <% if (currentUser) { %>
+<div class="currentUser container">
 <h1>Username: <%=currentUser.username%></h1>
 <form action="/secretSignInPath/6565/signout" method="POST">
-  <button>Sign out</button>
+  <button class="btn btn-danger">Sign out</button>
 </form>
-<br /><br />
+</div>
 <% } %>
 
-<form action="/subjects" method="GET">
-  <input type="text" name="search" placeholder="Search" />
-  <button>Search</button>
+<!-- <form action="/subjects" method="GET">
+  <input type="text" name="search" placeholder="Search" class="searchInput" />
+  <button class="searchButton btn btn-primary">Search</button>
+  <div class="input-group mb-3">
+    <input type="text" class="form-control" name="search">
+    <button class="btn btn-outline-secondary" id="button-addon2">Search</button>
+  </div>
 </form>
-<br />
+<br /> -->
 
 <% if (subjects.length) { %>
+<ol class="subjectsOl">
 <% for (const subject of subjects) { %>
-<a href="/subjects/<%=subject.id%>"><%=subject.title%></a><br />
+  <li class="h3">
+    <a href="/subjects/<%=subject.id%>" class="btn btn-dark text-light"><%=subject.title%></a>
+  </li>
 <% } %>
+</ol>
 <% } else { %>
   <h2>No subjects found.</h2>
 <% } %>
+
 <br /><br />
 
 <% if (currentUser) { %>
-<a href="/subjects/new">Add new subject</a><br />
+<a href="/subjects/new" class="btn btn-primary">Add new subject</a><br />
 <% } %>

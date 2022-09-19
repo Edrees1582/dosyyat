@@ -1,80 +1,83 @@
 <%- layout('layouts/boilerplate') %>
+<div class="container">
+  <h2><%=subject.title%></h2>
+  <h3><%=subject.id%></h3>
+  <p class="lead"><%=subject.description%></p>
 
-<h1><%=subject.title%></h1>
-<h2><%=subject.id%></h2>
-<p><%=subject.description%></p>
-
-<h3><a href="<%=subject.syllabus%>" target="_blank">Syllabus</a></h3>
+<div class="h3 mb-3"><a href="<%=subject.syllabus%>" target="_blank">Syllabus</a></div>
 
 <% if (subject.book) { %>
-<h3><a href="<%=subject.book%>" target="_blank">Book</a></h3>
-<br />
+<div class="h3 mb-3"><a href="<%=subject.book%>" target="_blank">Book</a></div>
 <% } %>
 
 <% if (subject.notebooks[0]) { %>
 <h2>Notebooks</h2>
 <% for (let i = 0; i < subject.notebooks.length; i++) { %>
-<h3>
-  <a href="<%=subject.notebooks[i].link%>" target="_blank"><%=subject.notebooks[i].name%></a>
+  <div class="mb-3">
+  <a href="<%=subject.notebooks[i].link%>" target="_blank" class="btn btn-primary btn-lg"><%=subject.notebooks[i].name%></a>
   <% if (currentUser && (currentUser.username == subject.owner.username)) { %>
-    <a href="/subjects/<%=subject.id%>/notebooks/<%=subject.notebooks[i]._id%>"> -- Edit</a>
-    <form action="/subjects/<%=subject.id%>/notebooks/<%=subject.notebooks[i]._id%>?_method=DELETE" method="POST">
-      <button>Delete</button>
+    <a href="/subjects/<%=subject.id%>/notebooks/<%=subject.notebooks[i]._id%>" class="btn btn-secondary btn-lg">Edit</a>
+    <form action="/subjects/<%=subject.id%>/notebooks/<%=subject.notebooks[i]._id%>?_method=DELETE" method="POST" class="deleteForm">
+      <button class="btn btn-danger btn-lg">Delete</button>
     </form>
+    <% } %>
+  </div>
   <% } %>
-</h3>
-<% } %>
-<br />
 <% } %>
 
 <% if (subject.videos[0]) { %>
 <h2>Videos</h2>
 <% for (let i = 0; i < subject.videos.length; i++) { %>
-<h3>
-  <a href="<%=subject.videos[i].link%>" target="_blank"><%=subject.videos[i].name%></a>
+  <div class="mb-3">
+  <a href="<%=subject.videos[i].link%>" target="_blank" class="btn btn-primary btn-lg"><%=subject.videos[i].name%></a>
   <% if (currentUser && (currentUser.username == subject.owner.username)) { %>
-    <a href="/subjects/<%=subject.id%>/videos/<%=subject.videos[i]._id%>"> -- Edit</a>
-    <form action="/subjects/<%=subject.id%>/videos/<%=subject.videos[i]._id%>?_method=DELETE" method="POST">
-      <button>Delete</button>
+    <a href="/subjects/<%=subject.id%>/videos/<%=subject.videos[i]._id%>" class="btn btn-secondary btn-lg">Edit</a>
+    <form action="/subjects/<%=subject.id%>/videos/<%=subject.videos[i]._id%>?_method=DELETE" method="POST" class="deleteForm">
+      <button class="btn btn-danger btn-lg">Delete</button>
     </form>
   <% } %>
-</h3>
+  </div>
 <% } %>
-<br />
 <% } %>
 
 <% if (subject.testBanks[0]) { %>
 <h2>Testbanks</h2>
 <% for (let i = 0; i < subject.testBanks.length; i++) { %>
-<h3>
-  <a href="<%=subject.testBanks[i].link%>" target="_blank"><%=subject.testBanks[i].name%></a>
+<div class="mb-5">
+  <a href="<%=subject.testBanks[i].link%>" target="_blank"  class="btn btn-primary btn-lg"><%=subject.testBanks[i].name%></a>
   <% if (currentUser && (currentUser.username == subject.owner.username)) { %>
-    <a href="/subjects/<%=subject.id%>/testbanks/<%=subject.testBanks[i]._id%>"> -- Edit</a>
-    <form action="/subjects/<%=subject.id%>/testbanks/<%=subject.testBanks[i]._id%>?_method=DELETE" method="POST">
-      <button>Delete</button>
+    <a href="/subjects/<%=subject.id%>/testbanks/<%=subject.testBanks[i]._id%>" class="btn btn-secondary btn-lg">Edit</a>
+    <form action="/subjects/<%=subject.id%>/testbanks/<%=subject.testBanks[i]._id%>?_method=DELETE" method="POST" class="deleteForm">
+      <button class="btn btn-danger btn-lg">Delete</button>
     </form>
   <% } %>
-</h3>
+  </div>
 <% } %>
 <% } %>
 
-<br /><br /><br /><br />
 <% if (currentUser && (currentUser.username == subject.owner.username)) { %>
-<a href="/subjects/<%=subject.id%>/edit">Edit</a>
-<br /><br />
-<form action="/subjects/<%=subject.id%>?_method=DELETE" method="POST">
-  <button>Delete</button>
-</form>
-<br /><br />
-<a href="/subjects/<%=subject.id%>/notebooks">Add new notebook</a>
-<br /><br />
-<a href="/subjects/<%=subject.id%>/videos">Add new video</a>
-<br /><br />
-<a href="/subjects/<%=subject.id%>/testbanks">Add new testbank</a>
+<div class="mb-3">
+  <a href="/subjects/<%=subject.id%>/edit" class="btn btn-secondary btn-lg w-50">Edit subject</a>
+</div>
+
+<div class="mb-3">
+  <form action="/subjects/<%=subject.id%>?_method=DELETE" method="POST">
+    <button class="btn btn-danger btn-lg w-50">Delete subject</button>
+  </form>
+</div>
+
+<div class="mb-3">
+  <a href="/subjects/<%=subject.id%>/notebooks" class="btn btn-primary btn-lg w-50">Add new notebook</a>
+</div>
+
+<div class="mb-3">
+  <a href="/subjects/<%=subject.id%>/videos" class="btn btn-primary btn-lg w-50">Add new video</a>
+</div>
+
+<div class="mb-3">
+<a href="/subjects/<%=subject.id%>/testbanks" class="btn btn-primary btn-lg w-50">Add new testbank</a>
+</div>
 <% } %>
 
-<% if (subject.owner.username) { %>
-<h2>By: <%=subject.owner.username%></h2>
-<% } %>
-
-<a href="/subjects">back</a>
+<a href="/subjects" class="btn btn-secondary w-50 mt-3">Back</a>
+</div>

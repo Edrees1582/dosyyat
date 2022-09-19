@@ -1,11 +1,19 @@
 <%- layout('layouts/boilerplate') %>
-<form action="/secretSignInPath/6565/signup" method="POST">
-  <label for="email">Email: </label>
-  <input type="email" name="users[email]" id="email" required /><br />
-  <label for="username">Username: </label>
-  <input type="text" name="users[username]" id="username" required /><br />
-  <label for="password">Password: </label>
-  <input type="password" name="users[password]" id="password" required /><br />
-  <button>Sign up</button>
-</form>
-<a href="/secretSignInPath/6565/signin" method="GET">Already have an account?</a>
+<div class="col-md-8 offset-md-2">
+  <form action="/secretSignInPath/6565/signup" method="POST" class="mb-3">
+    <div class="mb-3">
+      <label for="email">Email: </label>
+      <input type="email" name="users[email]" id="email" class="form-control" required />
+    </div>
+    <div class="mb-3">
+      <label for="username">Username: </label>
+      <input type="text" name="users[username]" id="username" class="form-control" required />
+    </div>
+    <div class="mb-3">
+      <label for="password">Password: </label>
+      <input type="password" name="users[password]" id="password" class="form-control" required />
+    </div>
+    <button class="btn btn-success">Sign up</button>
+    <a href="/secretSignInPath/6565/signin" method="GET" class="btn btn-secondary">Already have an account?</a>
+  </form>
+</div>

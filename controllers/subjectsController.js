@@ -8,15 +8,19 @@ module.exports.index = async (req, res) => {
       subjects = await Subject.find({
         title: { $regex: req.query.search, $options: 'i' }
       }).sort({ title: 'asc' });
-
-    res.render('subjects/index', { subjects, info: { title: 'Dosyyat' } });
+    res.render('subjects/index', {
+      subjects,
+      info: { title: 'Dosyyat', currentUrl: req.originalUrl }
+    });
   } catch (error) {
     res.send(error);
   }
 };
 
 module.exports.newForm = (req, res) => {
-  res.render('subjects/new', { info: { title: 'Dosyyat - New subject' } });
+  res.render('subjects/new', {
+    info: { title: 'Dosyyat - New subject', currentUrl: req.originalUrl }
+  });
 };
 
 module.exports.create = async (req, res) => {
@@ -40,7 +44,10 @@ module.exports.show = async (req, res) => {
     if (subject)
       res.render('subjects/show', {
         subject,
-        info: { title: `Dosyyat - ${subject.title}` }
+        info: {
+          title: `Dosyyat - ${subject.title}`,
+          currentUrl: req.originalUrl
+        }
       });
     else res.send('<h1>Not found.</h1>');
   } catch (error) {
@@ -54,7 +61,10 @@ module.exports.editForm = async (req, res) => {
     if (subject) {
       res.render('subjects/edit', {
         subject,
-        info: { title: `Dosyyat - ${subject.title} - Edit` }
+        info: {
+          title: `Dosyyat - ${subject.title} - Edit`,
+          currentUrl: req.originalUrl
+        }
       });
     }
   } catch (error) {
@@ -83,7 +93,7 @@ module.exports.deleteSub = async (req, res) => {
 module.exports.createNotebookForm = (req, res) => {
   res.render('subjects/notebooks/new', {
     subject: { id: req.params.id },
-    info: { title: 'Dosyyat - New notebook' }
+    info: { title: 'Dosyyat - New notebook', currentUrl: req.originalUrl }
   });
 };
 
@@ -116,7 +126,10 @@ module.exports.editNotebookForm = async (req, res) => {
     res.render('subjects/notebooks/edit', {
       subject,
       notebook,
-      info: { title: `Dosyyat - ${subject.title} - ${notebook.name} - Edit` }
+      info: {
+        title: `Dosyyat - ${subject.title} - ${notebook.name} - Edit`,
+        currentUrl: req.originalUrl
+      }
     });
   } catch (error) {
     res.send(error);
@@ -165,7 +178,7 @@ module.exports.deleteNotebook = async (req, res) => {
 module.exports.createVideoForm = (req, res) => {
   res.render('subjects/videos/new', {
     subject: { id: req.params.id },
-    info: { title: 'Dosyyat - New video' }
+    info: { title: 'Dosyyat - New video', currentUrl: req.originalUrl }
   });
 };
 
@@ -198,7 +211,10 @@ module.exports.editVideoForm = async (req, res) => {
     res.render('subjects/videos/edit', {
       subject,
       video,
-      info: { title: `Dosyyat - ${subject.title} - ${video.name} - Edit` }
+      info: {
+        title: `Dosyyat - ${subject.title} - ${video.name} - Edit`,
+        currentUrl: req.originalUrl
+      }
     });
   } catch (error) {
     res.send(error);
@@ -247,7 +263,7 @@ module.exports.deleteVideo = async (req, res) => {
 module.exports.createTestbankForm = (req, res) => {
   res.render('subjects/testbanks/new', {
     subject: { id: req.params.id },
-    info: { title: 'Dosyyat - New testbanks' }
+    info: { title: 'Dosyyat - New testbanks', currentUrl: req.originalUrl }
   });
 };
 
@@ -280,7 +296,10 @@ module.exports.editTestbankForm = async (req, res) => {
     res.render('subjects/testbanks/edit', {
       subject,
       testbank,
-      info: { title: `Dosyyat - ${subject.title} - ${testbank.name} - Edit` }
+      info: {
+        title: `Dosyyat - ${subject.title} - ${testbank.name} - Edit`,
+        currentUrl: req.originalUrl
+      }
     });
   } catch (error) {
     res.send(error);

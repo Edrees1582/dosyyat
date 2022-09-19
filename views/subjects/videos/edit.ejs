@@ -1,26 +1,25 @@
-<%- layout('layouts/boilerplate') %>
-<form
-  action="/subjects/<%=subject.id%>/videos/<%=video._id%>/?_method=PUT"
-  method="POST"
->
-  <label for="name">Name: </label>
-  <input
-    type="text"
-    name="video[name]"
-    id="name"
-    value="<%=video.name%>"
-    required
-  />
-  <br /><br />
-  <label for="link">Link: </label>
-  <input
-    type="text"
-    name="video[link]"
-    id="link"
-    value="<%=video.link%>"
-    required
-  />
-  <br /><br />
-  <button>Edit</button>
+<%- layout('layouts/forms') %>
+<h1>Edit video</h1>
+<form action="/subjects/<%=subject.id%>/videos/<%=video._id%>/?_method=PUT" method="POST">
+  <div class="mb-3">
+    <label for="name">Name: </label>
+    <input
+      type="text"
+      name="video[name]"
+      id="name"
+      value="<%=video.name%>"
+      class="form-control"
+      required />
+  </div>
+  <div class="mb-3">
+    <label for="link">Link: </label>
+    <input
+      type="text"
+      name="video[link]"
+      id="link"
+      value="<%=video.link%>"
+      class="form-control"
+      required />
+  </div>
+  <button class="btn btn-success w-100">Edit</button>
 </form>
-<a href="/subjects/<%=subject.id%>">back</a>

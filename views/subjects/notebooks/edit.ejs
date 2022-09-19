@@ -1,26 +1,25 @@
-<%- layout('layouts/boilerplate') %>
-<form
-  action="/subjects/<%=subject.id%>/notebooks/<%=notebook._id%>/?_method=PUT"
-  method="POST"
->
-  <label for="name">Name: </label>
-  <input
-    type="text"
-    name="notebook[name]"
-    id="name"
-    value="<%=notebook.name%>"
-    required
-  />
-  <br /><br />
-  <label for="link">Link: </label>
-  <input
-    type="text"
-    name="notebook[link]"
-    id="link"
-    value="<%=notebook.link%>"
-    required
-  />
-  <br /><br />
-  <button>Edit</button>
+<%- layout('layouts/forms') %>
+<h1>Edit notebook</h1>
+<form action="/subjects/<%=subject.id%>/notebooks/<%=notebook._id%>/?_method=PUT" method="POST">
+  <div class="mb-3">
+    <label for="name">Name: </label>
+    <input
+      type="text"
+      name="notebook[name]"
+      id="name"
+      value="<%=notebook.name%>"
+      class="form-control"
+      required />
+  </div>
+  <div class="mb-3">
+    <label for="link">Link: </label>
+    <input
+      type="text"
+      name="notebook[link]"
+      id="link"
+      value="<%=notebook.link%>"
+      class="form-control"
+      required />
+  </div>
+  <button class="btn btn-success w-100">Edit</button>
 </form>
-<a href="/subjects/<%=subject.id%>">back</a>
