@@ -8,12 +8,21 @@ module.exports.index = async (req, res) => {
       subjects = await Subject.find({
         title: { $regex: req.query.search, $options: 'i' }
       }).sort({ title: 'asc' });
+
     res.render('subjects/index', {
       subjects,
       info: { title: 'Dosyyat', currentUrl: req.originalUrl }
     });
-  } catch (error) {
-    res.send(error);
+  } catch (err) {
+    res.render('error', {
+      info: {
+        title: 'Dosyyat - Error',
+        currentUrl: req.originalUrl,
+        error: {
+          message: err.message || 'Error occurred'
+        }
+      }
+    });
   }
 };
 
@@ -31,8 +40,16 @@ module.exports.create = async (req, res) => {
   try {
     await editedSubject.save();
     res.redirect(`/subjects/${editedSubject.id}`);
-  } catch (error) {
-    res.send(error);
+  } catch (err) {
+    res.render('error', {
+      info: {
+        title: 'Dosyyat - Error',
+        currentUrl: req.originalUrl,
+        error: {
+          message: err.message || 'Error occurred'
+        }
+      }
+    });
   }
 };
 
@@ -49,9 +66,17 @@ module.exports.show = async (req, res) => {
           currentUrl: req.originalUrl
         }
       });
-    else res.send('<h1>Not found.</h1>');
-  } catch (error) {
-    res.send(error);
+    else throw new Error('Subject not found.');
+  } catch (err) {
+    res.render('error', {
+      info: {
+        title: 'Dosyyat - Error',
+        currentUrl: req.originalUrl,
+        error: {
+          message: err.message || 'Error occurred'
+        }
+      }
+    });
   }
 };
 
@@ -67,8 +92,16 @@ module.exports.editForm = async (req, res) => {
         }
       });
     }
-  } catch (error) {
-    res.send(error);
+  } catch (err) {
+    res.render('error', {
+      info: {
+        title: 'Dosyyat - Error',
+        currentUrl: req.originalUrl,
+        error: {
+          message: err.message || 'Error occurred'
+        }
+      }
+    });
   }
 };
 
@@ -76,8 +109,16 @@ module.exports.edit = async (req, res) => {
   try {
     await Subject.findOneAndUpdate({ id: req.params.id }, req.body.subject);
     res.redirect(`/subjects/${req.body.subject.id}`);
-  } catch (error) {
-    res.send(error);
+  } catch (err) {
+    res.render('error', {
+      info: {
+        title: 'Dosyyat - Error',
+        currentUrl: req.originalUrl,
+        error: {
+          message: err.message || 'Error occurred'
+        }
+      }
+    });
   }
 };
 
@@ -85,16 +126,39 @@ module.exports.deleteSub = async (req, res) => {
   try {
     await Subject.deleteOne({ id: req.params.id });
     res.redirect('/subjects');
-  } catch (error) {
-    res.send(error);
+  } catch (err) {
+    res.render('error', {
+      info: {
+        title: 'Dosyyat - Error',
+        currentUrl: req.originalUrl,
+        error: {
+          message: err.message || 'Error occurred'
+        }
+      }
+    });
   }
 };
 
-module.exports.createNotebookForm = (req, res) => {
-  res.render('subjects/notebooks/new', {
-    subject: { id: req.params.id },
-    info: { title: 'Dosyyat - New notebook', currentUrl: req.originalUrl }
-  });
+module.exports.createNotebookForm = async (req, res) => {
+  try {
+    const subject = await Subject.findOne({ id: req.params.id });
+    if (subject) {
+      res.render('subjects/notebooks/new', {
+        subject,
+        info: { title: 'Dosyyat - New notebook', currentUrl: req.originalUrl }
+      });
+    } else throw new Error('Subject not found.');
+  } catch (err) {
+    res.render('error', {
+      info: {
+        title: 'Dosyyat - Error',
+        currentUrl: req.originalUrl,
+        error: {
+          message: err.message || 'Error occurred'
+        }
+      }
+    });
+  }
 };
 
 module.exports.createNotebook = async (req, res) => {
@@ -108,9 +172,18 @@ module.exports.createNotebook = async (req, res) => {
       { id: req.params.id },
       { $push: { notebooks: notebook } }
     );
-    res.redirect(`/subjects/${subject.id}`);
-  } catch (error) {
-    res.send(error);
+    if (subject) res.redirect(`/subjects/${subject.id}`);
+    else throw new Error('Subject not found.');
+  } catch (err) {
+    res.render('error', {
+      info: {
+        title: 'Dosyyat - Error',
+        currentUrl: req.originalUrl,
+        error: {
+          message: err.message || 'Error occurred'
+        }
+      }
+    });
   }
 };
 
@@ -120,19 +193,31 @@ module.exports.editNotebookForm = async (req, res) => {
       'subject.id': req.params.id,
       'notebooks._id': req.params.notebookId
     });
-    const notebook = subject.notebooks.find((notebook) =>
-      notebook._id.equals(req.params.notebookId)
-    );
-    res.render('subjects/notebooks/edit', {
-      subject,
-      notebook,
+    if (subject) {
+      const notebook = subject.notebooks.find((notebook) =>
+        notebook._id.equals(req.params.notebookId)
+      );
+      if (notebook) {
+        res.render('subjects/notebooks/edit', {
+          subject,
+          notebook,
+          info: {
+            title: `Dosyyat - ${subject.title} - ${notebook.name} - Edit`,
+            currentUrl: req.originalUrl
+          }
+        });
+      } else throw new Error('Notebook not found.');
+    } else throw new Error('Subject not found.');
+  } catch (err) {
+    res.render('error', {
       info: {
-        title: `Dosyyat - ${subject.title} - ${notebook.name} - Edit`,
-        currentUrl: req.originalUrl
+        title: 'Dosyyat - Error',
+        currentUrl: req.originalUrl,
+        error: {
+          message: err.message || 'Error occurred'
+        }
       }
     });
-  } catch (error) {
-    res.send(error);
   }
 };
 
@@ -150,9 +235,18 @@ module.exports.editNotebook = async (req, res) => {
         }
       }
     );
-    res.redirect(`/subjects/${subject.id}`);
-  } catch (error) {
-    res.send(error);
+    if (subject) res.redirect(`/subjects/${subject.id}`);
+    else throw new Error('Subject or notebook not found');
+  } catch (err) {
+    res.render('error', {
+      info: {
+        title: 'Dosyyat - Error',
+        currentUrl: req.originalUrl,
+        error: {
+          message: err.message || 'Error occurred'
+        }
+      }
+    });
   }
 };
 
@@ -169,17 +263,41 @@ module.exports.deleteNotebook = async (req, res) => {
         }
       }
     );
-    res.redirect(`/subjects/${subject.id}`);
-  } catch (error) {
-    res.send(error);
+    if (subject) res.redirect(`/subjects/${subject.id}`);
+    else throw new Error('Subject or notebook not found');
+  } catch (err) {
+    res.render('error', {
+      info: {
+        title: 'Dosyyat - Error',
+        currentUrl: req.originalUrl,
+        error: {
+          message: err.message || 'Error occurred'
+        }
+      }
+    });
   }
 };
 
-module.exports.createVideoForm = (req, res) => {
-  res.render('subjects/videos/new', {
-    subject: { id: req.params.id },
-    info: { title: 'Dosyyat - New video', currentUrl: req.originalUrl }
-  });
+module.exports.createVideoForm = async (req, res) => {
+  try {
+    const subject = await Subject.findOne({ id: req.params.id });
+    if (subject) {
+      res.render('subjects/videos/new', {
+        subject,
+        info: { title: 'Dosyyat - New video', currentUrl: req.originalUrl }
+      });
+    } else throw new Error('Subject not found');
+  } catch (err) {
+    res.render('error', {
+      info: {
+        title: 'Dosyyat - Error',
+        currentUrl: req.originalUrl,
+        error: {
+          message: err.message || 'Error occurred'
+        }
+      }
+    });
+  }
 };
 
 module.exports.createVideo = async (req, res) => {
@@ -193,31 +311,51 @@ module.exports.createVideo = async (req, res) => {
       { id: req.params.id },
       { $push: { videos: video } }
     );
-    res.redirect(`/subjects/${subject.id}`);
-  } catch (error) {
-    res.send(error);
+    if (subject) res.redirect(`/subjects/${subject.id}`);
+    else throw new Error('Subject not found');
+  } catch (err) {
+    res.render('error', {
+      info: {
+        title: 'Dosyyat - Error',
+        currentUrl: req.originalUrl,
+        error: {
+          message: err.message || 'Error occurred'
+        }
+      }
+    });
   }
 };
 
 module.exports.editVideoForm = async (req, res) => {
   try {
     const subject = await Subject.findOne({
-      'subject.id': req.params.id,
-      'videos._id': req.params.videoId
+      id: req.params.id
     });
-    const video = subject.videos.find((video) =>
-      video._id.equals(req.params.videoId)
-    );
-    res.render('subjects/videos/edit', {
-      subject,
-      video,
+    if (subject) {
+      const video = subject.videos.find((video) =>
+        video._id.equals(req.params.videoId)
+      );
+      if (video) {
+        res.render('subjects/videos/edit', {
+          subject,
+          video,
+          info: {
+            title: `Dosyyat - ${subject.title} - ${video.name} - Edit`,
+            currentUrl: req.originalUrl
+          }
+        });
+      } else throw new Error('Video not found.');
+    } else throw new Error('Subject not found.');
+  } catch (err) {
+    res.render('error', {
       info: {
-        title: `Dosyyat - ${subject.title} - ${video.name} - Edit`,
-        currentUrl: req.originalUrl
+        title: 'Dosyyat - Error',
+        currentUrl: req.originalUrl,
+        error: {
+          message: err.message || 'Error occurred'
+        }
       }
     });
-  } catch (error) {
-    res.send(error);
   }
 };
 
@@ -235,9 +373,18 @@ module.exports.editVideo = async (req, res) => {
         }
       }
     );
-    res.redirect(`/subjects/${subject.id}`);
-  } catch (error) {
-    res.send(error);
+    if (subject) res.redirect(`/subjects/${subject.id}`);
+    else throw new Error('Subject or video not found');
+  } catch (err) {
+    res.render('error', {
+      info: {
+        title: 'Dosyyat - Error',
+        currentUrl: req.originalUrl,
+        error: {
+          message: err.message || 'Error occurred'
+        }
+      }
+    });
   }
 };
 
@@ -254,17 +401,41 @@ module.exports.deleteVideo = async (req, res) => {
         }
       }
     );
-    res.redirect(`/subjects/${subject.id}`);
-  } catch (error) {
-    res.send(error);
+    if (subject) res.redirect(`/subjects/${subject.id}`);
+    else throw new Error('Subject or video not found');
+  } catch (err) {
+    res.render('error', {
+      info: {
+        title: 'Dosyyat - Error',
+        currentUrl: req.originalUrl,
+        error: {
+          message: err.message || 'Error occurred'
+        }
+      }
+    });
   }
 };
 
-module.exports.createTestbankForm = (req, res) => {
-  res.render('subjects/testbanks/new', {
-    subject: { id: req.params.id },
-    info: { title: 'Dosyyat - New testbanks', currentUrl: req.originalUrl }
-  });
+module.exports.createTestbankForm = async (req, res) => {
+  try {
+    const subject = await Subject.findOne({ id: req.params.id });
+    if (subject) {
+      res.render('subjects/testbanks/new', {
+        subject,
+        info: { title: 'Dosyyat - New testbanks', currentUrl: req.originalUrl }
+      });
+    } else throw new Error('Subject not found.');
+  } catch (err) {
+    res.render('error', {
+      info: {
+        title: 'Dosyyat - Error',
+        currentUrl: req.originalUrl,
+        error: {
+          message: err.message || 'Error occurred'
+        }
+      }
+    });
+  }
 };
 
 module.exports.createTestbank = async (req, res) => {
@@ -278,9 +449,18 @@ module.exports.createTestbank = async (req, res) => {
       { id: req.params.id },
       { $push: { testBanks: testbank } }
     );
-    res.redirect(`/subjects/${subject.id}`);
-  } catch (error) {
-    res.send(error);
+    if (subject) res.redirect(`/subjects/${subject.id}`);
+    else throw new Error('Subject or testbank not found');
+  } catch (err) {
+    res.render('error', {
+      info: {
+        title: 'Dosyyat - Error',
+        currentUrl: req.originalUrl,
+        error: {
+          message: err.message || 'Error occurred'
+        }
+      }
+    });
   }
 };
 
@@ -290,19 +470,31 @@ module.exports.editTestbankForm = async (req, res) => {
       'subject.id': req.params.id,
       'testBanks._id': req.params.testbankId
     });
-    const testbank = subject.testBanks.find((testbank) =>
-      testbank._id.equals(req.params.testbankId)
-    );
-    res.render('subjects/testbanks/edit', {
-      subject,
-      testbank,
+    if (subject) {
+      const testbank = subject.testBanks.find((testbank) =>
+        testbank._id.equals(req.params.testbankId)
+      );
+      if (testbank) {
+        res.render('subjects/testbanks/edit', {
+          subject,
+          testbank,
+          info: {
+            title: `Dosyyat - ${subject.title} - ${testbank.name} - Edit`,
+            currentUrl: req.originalUrl
+          }
+        });
+      }
+    }
+  } catch (err) {
+    res.render('error', {
       info: {
-        title: `Dosyyat - ${subject.title} - ${testbank.name} - Edit`,
-        currentUrl: req.originalUrl
+        title: 'Dosyyat - Error',
+        currentUrl: req.originalUrl,
+        error: {
+          message: err.message || 'Error occurred'
+        }
       }
     });
-  } catch (error) {
-    res.send(error);
   }
 };
 
@@ -320,9 +512,18 @@ module.exports.editTestbank = async (req, res) => {
         }
       }
     );
-    res.redirect(`/subjects/${subject.id}`);
-  } catch (error) {
-    res.send(error);
+    if (subject) res.redirect(`/subjects/${subject.id}`);
+    else throw new Error('Subject or testbank not found');
+  } catch (err) {
+    res.render('error', {
+      info: {
+        title: 'Dosyyat - Error',
+        currentUrl: req.originalUrl,
+        error: {
+          message: err.message || 'Error occurred'
+        }
+      }
+    });
   }
 };
 
@@ -339,8 +540,17 @@ module.exports.deleteTestbank = async (req, res) => {
         }
       }
     );
-    res.redirect(`/subjects/${subject.id}`);
-  } catch (error) {
-    res.send(error);
+    if (subject) res.redirect(`/subjects/${subject.id}`);
+    else throw new Error('Subject or testbank not found');
+  } catch (err) {
+    res.render('error', {
+      info: {
+        title: 'Dosyyat - Error',
+        currentUrl: req.originalUrl,
+        error: {
+          message: err.message || 'Error occurred'
+        }
+      }
+    });
   }
 };

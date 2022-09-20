@@ -19,7 +19,7 @@ router
   .post(
     isSignedOut,
     passport.authenticate('local', {
-      failureRedirect: '/signin',
+      failureRedirect: '/secretSignInPath/6565/signin',
       successRedirect: '/subjects'
     })
   );

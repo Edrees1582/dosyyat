@@ -68,7 +68,15 @@ app.get('/', (req, res) => {
 });
 
 app.all('*', (req, res) => {
-  res.send('404 Page Not Found.');
+  res.render('error', {
+    info: {
+      title: 'Dosyyat - Error',
+      currentUrl: req.originalUrl,
+      error: {
+        message: 'Page not found.'
+      }
+    }
+  });
 });
 
 app.listen(port, () => {
