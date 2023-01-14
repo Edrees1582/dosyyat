@@ -5,7 +5,7 @@ notebooks, videos, testbanks
 and more info about subjects.
 Created with NodeJS, ExpressJS, MongoDB, Bootstrap.
 
-The live site is hosted on Heroku
+The live site is hosted on render
 so it may take a while to load.
 
-Live site: [Dosyyat](https://dosyyat.herokuapp.com/subjects)
+Live site: [Dosyyat](https://dosyyat.onrender.com/subjects)
