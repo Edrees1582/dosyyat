@@ -20,9 +20,28 @@
   <a href="<%=subject.notebooks[i].link%>" target="_blank" class="btn btn-primary"><%=subject.notebooks[i].name%></a>
   <% if (currentUser && (currentUser.username == subject.owner.username)) { %>
     <a href="/subjects/<%=subject.id%>/notebooks/<%=subject.notebooks[i]._id%>" class="btn btn-secondary">Edit</a>
-    <form action="/subjects/<%=subject.id%>/notebooks/<%=subject.notebooks[i]._id%>?_method=DELETE" method="POST" class="deleteForm">
-      <button class="btn btn-danger">Delete</button>
-    </form>
+    <button type="button" class="btn btn-danger" data-bs-toggle="modal" data-bs-target="#deleteNotebookModal<%=subject.notebooks[i]._id%>">Delete</button>
+    <div class="modal fade" id="deleteNotebookModal<%=subject.notebooks[i]._id%>" tabindex="-1" aria-labelledby="deleteNotebookModalLabel<%=subject.notebooks[i]._id%>" aria-hidden="true">
+      <div class="modal-dialog">
+        <div class="modal-content">
+          <div class="modal-header">
+            <h5 class="modal-title" id="deleteNotebookModalLabel<%=subject.notebooks[i]._id%>">Delete notebook</h5>
+            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+          </div>
+          <div class="modal-body">
+            Are you sure you want to delete <%=subject.notebooks[i].name%> notebook?
+          </div>
+          <div class="modal-footer">
+            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+            <form action="/subjects/<%=subject.id%>/notebooks/<%=subject.notebooks[i]._id%>?_method=DELETE" method="POST" class="deleteForm">
+              <button class="btn btn-danger w-100">
+                Confirm delete
+              </button>
+            </form>
+          </div>
+        </div>
+      </div>
+    </div>
     <% } %>
   </div>
   <% } %>
@@ -38,9 +57,28 @@
   <a href="<%=subject.videos[i].link%>" target="_blank" class="btn btn-primary"><%=subject.videos[i].name%></a>
   <% if (currentUser && (currentUser.username == subject.owner.username)) { %>
     <a href="/subjects/<%=subject.id%>/videos/<%=subject.videos[i]._id%>" class="btn btn-secondary">Edit</a>
-    <form action="/subjects/<%=subject.id%>/videos/<%=subject.videos[i]._id%>?_method=DELETE" method="POST" class="deleteForm">
-      <button class="btn btn-danger">Delete</button>
-    </form>
+    <button type="button" class="btn btn-danger" data-bs-toggle="modal" data-bs-target="#deleteVideoModal<%=subject.videos[i]._id%>">Delete</button>
+    <div class="modal fade" id="deleteVideoModal<%=subject.videos[i]._id%>" tabindex="-1" aria-labelledby="deleteVideoModalLabel<%=subject.videos[i]._id%>" aria-hidden="true">
+      <div class="modal-dialog">
+        <div class="modal-content">
+          <div class="modal-header">
+            <h5 class="modal-title" id="deleteVideoModalLabel<%=subject.videos[i]._id%>">Delete video</h5>
+            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+          </div>
+          <div class="modal-body">
+            Are you sure you want to delete <%=subject.videos[i].name%> video?
+          </div>
+          <div class="modal-footer">
+            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+            <form action="/subjects/<%=subject.id%>/videos/<%=subject.videos[i]._id%>?_method=DELETE" method="POST" class="deleteForm">
+              <button class="btn btn-danger w-100">
+                Confirm delete
+              </button>
+            </form>
+          </div>
+        </div>
+      </div>
+    </div>
   <% } %>
   </div>
 <% } %>
@@ -56,9 +94,30 @@
   <a href="<%=subject.testBanks[i].link%>" target="_blank"  class="btn btn-primary"><%=subject.testBanks[i].name%></a>
   <% if (currentUser && (currentUser.username == subject.owner.username)) { %>
     <a href="/subjects/<%=subject.id%>/testbanks/<%=subject.testBanks[i]._id%>" class="btn btn-secondary">Edit</a>
-    <form action="/subjects/<%=subject.id%>/testbanks/<%=subject.testBanks[i]._id%>?_method=DELETE" method="POST" class="deleteForm">
-      <button class="btn btn-danger">Delete</button>
-    </form>
+    <button type="button" class="btn btn-danger" data-bs-toggle="modal" data-bs-target="#deleteTestBankModal<%=subject.testBanks[i]._id%>">
+      Delete
+    </button>
+    <div class="modal fade" id="deleteTestBankModal<%=subject.testBanks[i]._id%>" tabindex="-1" aria-labelledby="deleteTestBankModalLabel<%=subject.testBanks[i]._id%>" aria-hidden="true">
+      <div class="modal-dialog">
+        <div class="modal-content">
+          <div class="modal-header">
+            <h5 class="modal-title" id="deleteTestBankModalLabel<%=subject.testBanks[i]._id%>">Delete testbank</h5>
+            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+          </div>
+          <div class="modal-body">
+            Are you sure you want to delete <%=subject.testBanks[i].name%> testbank?
+          </div>
+          <div class="modal-footer">
+            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+            <form action="/subjects/<%=subject.id%>/testbanks/<%=subject.testBanks[i]._id%>?_method=DELETE" method="POST" class="deleteForm">
+              <button class="btn btn-danger w-100">
+                Confirm delete
+              </button>
+            </form>
+          </div>
+        </div>
+      </div>
+    </div>
   <% } %>
   </div>
 <% } %>
@@ -82,9 +141,31 @@
 </div>
 
 <div class="mb-3">
-  <form action="/subjects/<%=subject.id%>?_method=DELETE" method="POST">
-    <button class="btn btn-danger w-50">Delete subject</button>
-  </form>
+    <button type="button" class="btn btn-danger w-50" data-bs-toggle="modal" data-bs-target="#deleteSubjectModal">
+      Delete subject
+    </button>
+</div>
+
+<div class="modal fade" id="deleteSubjectModal" tabindex="-1" aria-labelledby="deleteSubjectModalLabel" aria-hidden="true">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="deleteSubjectModalLabel">Delete subject</h5>
+        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+      </div>
+      <div class="modal-body">
+        Are you sure you want to delete <%=subject.title%> subject?
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+        <form action="/subjects/<%=subject.id%>?_method=DELETE" method="POST">
+          <button class="btn btn-danger w-100">
+            Confirm delete
+          </button>
+        </form>
+      </div>
+    </div>
+  </div>
 </div>
 <% } %>
 

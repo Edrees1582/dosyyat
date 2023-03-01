@@ -23,13 +23,16 @@ const {
   createTestbank,
   editTestbankForm,
   editTestbank,
-  deleteTestbank
+  deleteTestbank,
+  testApi
 } = require('../controllers/subjectsController');
 const { isSignedIn, isAuthorized } = require('../middleware');
 
 router.route('/').get(index).post(isSignedIn, create);
 
 router.get('/new', isSignedIn, newForm);
+
+router.get('/testApi', testApi);
 
 router
   .route('/:id/notebooks')

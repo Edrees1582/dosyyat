@@ -554,3 +554,10 @@ module.exports.deleteTestbank = async (req, res) => {
     });
   }
 };
+
+
+module.exports.testApi = async (req, res) => {
+  res.setHeader("Access-Control-Allow-Origin", "*");
+  const subjects = await Subject.find({}).sort({ title: 'asc' });
+  res.json(subjects);
+};
