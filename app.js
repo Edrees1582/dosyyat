@@ -32,8 +32,8 @@ const sessionConfig = {
   cookie: {
     httpOnly: true,
     expires: Date.now() + 1000 * 60 * 60 * 24 * 7,
-    maxAge: 1000 * 60 * 60 * 24 * 7
-  }
+    maxAge: 1000 * 60 * 60 * 24 * 7,
+  },
 };
 
 app.use('/public', express.static(path.join(__dirname, 'public')));
@@ -59,7 +59,7 @@ app.use((req, res, next) => {
 });
 
 app.use('/subjects', subjectsRoutes);
-app.use('/signInPath578463/474746', usersRoutes);
+app.use('/secretSignInPath/6565', usersRoutes);
 
 app.get('/', (req, res) => {
   res.send(
@@ -73,9 +73,9 @@ app.all('*', (req, res) => {
       title: 'Dosyyat - Error',
       currentUrl: req.originalUrl,
       error: {
-        message: 'Page not found.'
-      }
-    }
+        message: 'Page not found.',
+      },
+    },
   });
 });
 
