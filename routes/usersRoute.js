@@ -6,7 +6,7 @@ const {
   signupForm,
   signup,
   signinForm,
-  signout
+  signout,
 } = require('../controllers/usersController');
 
 const { isSignedIn, isSignedOut } = require('../middleware');
@@ -19,8 +19,8 @@ router
   .post(
     isSignedOut,
     passport.authenticate('local', {
-      failureRedirect: '/signInPath578463/474746/signin',
-      successRedirect: '/subjects'
+      failureRedirect: '/secretSignInPath/6565/signin',
+      successRedirect: '/subjects',
     })
   );
 

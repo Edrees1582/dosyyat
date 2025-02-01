@@ -15,7 +15,7 @@ module.exports.signup = async (req, res, next) => {
     });
   } catch (error) {
     console.log(error);
-    res.redirect('/signInPath578463/474746/signup');
+    res.redirect('/secretSignInPath/6565/signup');
   }
 };
 
